@@ -12,7 +12,7 @@ class Logout extends Component{
     state = {
       redirect: false
     }
-  
+    
     componentDidMount() {
       axios.get('/logout') 
       .then (res => {

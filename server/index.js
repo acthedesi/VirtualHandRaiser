@@ -66,9 +66,6 @@ io.on('connection', (socket) => {
 });
 
 
-
-
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
@@ -84,11 +81,6 @@ app.get('/api/users', (req, res) => {
     res.json(Student.find({}).toArray());
 })
 
-
-app.get('/api/updateid', (req, res) => {
-
-});
-
 app.post('/api/getquestions', (req, res) => {
     let room = req.body.room;
     Questions.find({room : room}).limit(100).sort({likes:1}).then(data => {
@@ -100,7 +92,8 @@ app.post('/api/update', (req, res) => {
     let questionText = req.body.question;
     let likes = req.body.likes;
     let room = req.body.room;
-    Questions.updateOne({question : questionText}, {likes: likes}, ).then(resp => {
+    let isClicked = req.body.isClicked;
+    Questions.updateOne({question : questionText}, {likes: likes, isClicked:isClicked}).then(resp => {
         res.json({success : true});
     }); 
 })
@@ -113,7 +106,8 @@ app.post('/api/addquestion', (req, res) => {
     let newQuestion = new Questions({
         question: qtext,
         likes: 0,
-        room: room
+        room: room,
+        isClicked: false
     })
     newQuestion.save().then(data => {
         console.log(data),
@@ -167,7 +161,6 @@ app.post('/api/adduser',  (req, res) => {
 app.post('/api/checkuser', (req, res) => {
     const formData = req.body.formData;
     console.log("this is formData", formData);
-//    let inDatabase = false;
     Student.findOne({username: formData.username}, function(err, student) {
         if (student == null) {
             res.json({success: false});   

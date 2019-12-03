@@ -1,3 +1,9 @@
 .blue {
     background-color: #008CBA;
+    outline: none;
+}
+
+
+blue:hover {
+    background-color: #008CBA;
 }
