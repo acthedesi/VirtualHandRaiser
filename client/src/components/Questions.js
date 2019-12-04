@@ -14,7 +14,7 @@ class Questions extends Component {
             username: this.props.username,
             questions: [],
         }
-        //this.updateList.bind(this);
+        this.updateList.bind(this);
     }
 
     componentDidMount () {
@@ -26,24 +26,25 @@ class Questions extends Component {
         })
     }
 
-    // updateList(id, isClicked) {
-    //     let currQ = this.state.questions[0];
-    //     for (let i = 0; i < this.state.questions.length; i++) {
-    //         if (this.state.questions[i].question == id) {
-    //             currQ = this.state.questions[i];
-    //         }
-    //     }
-    //     console.log("currQ: " +  currQ.question);
-    //     if (isClicked) {
-    //         axios.post('/api/update', {question: currQ.question, likes : currQ.likes + 1, isClicked: isClicked}).then(res => {
-    //             window.location.reload();
-    //         })      
-    //     } else {
-    //         axios.post('/api/update', {question: currQ.question, likes : currQ.likes - 1, isClicked: isClicked}).then(res => {
-    //             window.location.reload();
-    //         })   
-    //     }
-    // }
+    
+    updateList(id, isClicked) {
+        let currQ = this.state.questions[0];
+        for (let i = 0; i < this.state.questions.length; i++) {
+            if (this.state.questions[i].question == id) {
+                currQ = this.state.questions[i];
+            }
+        }
+        console.log("currQ: " +  currQ.question);
+        if (isClicked) {
+            axios.post('/api/update', {question: currQ.question, likes : currQ.likes + 1, clicked: isClicked, username: this.props.username}).then(res => {
+                window.location.reload();
+            })      
+        } else {
+            axios.post('/api/update', {question: currQ.question, likes : currQ.likes - 1, clicked: isClicked, username: this.props.username}).then(res => {
+                window.location.reload();
+            })   
+        }
+    }
 
     updateList2(currQ) {
         axios.post('/api/update', {question: currQ.question, likes : currQ.likes + 1}).then(res => {
@@ -59,8 +60,8 @@ class Questions extends Component {
                 <ScrollToBottom className="list-group">     
                    
                 {this.state.questions.map((question, index)=>
-                    <button key={question.question} className="list-group-item list-group-item-action" onClick={() => this.updateList2(question)}><span id="left">{question.question}</span>  <span id="right">Likes: {question.likes}</span></button>
-                    //<Button {...this.state} question = {question} updateList = {this.updateList.bind(this)}/>
+                   // <button key={question.question} className="list-group-item list-group-item-action" onClick={() => this.updateList2(question)}><span id="left">{question.question}</span>  <span id="right">Likes: {question.likes}</span></button>
+                    <Button {...this.state} question = {question} updateList = {this.updateList.bind(this)}/>
                 )}
                 </ScrollToBottom>
             </div>

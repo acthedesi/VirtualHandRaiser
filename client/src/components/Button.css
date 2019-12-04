@@ -1,8 +1,12 @@
 .blue {
-    background-color: #008CBA;
+    background-color: rgb(156, 214, 233);
     outline: none;
+    font-weight:bold;
 }
 
+.default {
+    font-weight:bold;
+}
 
 blue:hover {
     background-color: #008CBA;

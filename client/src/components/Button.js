@@ -7,7 +7,7 @@ class Button extends Component {
         this.state = {
             questionText: null,
             Likes: null,
-            isClicked: false,
+            isClicked: [],
             id: null
         }
     }
@@ -20,18 +20,29 @@ class Button extends Component {
             isClicked: this.props.question.isClicked
         })
     }
-
+//this.setState({isClicked: false});
+//this.setState({isClicked: true});
     render() {
-        if (this.state.isClicked) {
+        console.log(this.props.question.isClicked);
+        if (this.props.question.isClicked.indexOf(this.props.username) != -1) {
+            console.log("this is run");
             return(
-                <button className="list-group-item list-group-item-action blue" onClick = {() => {this.setState({isClicked: false}); this.props.updateList(this.state.id, false) }}>{this.state.questionText}  {this.state.Likes}</button>
+                <div class = "row">
+
+                        <button className="list-group-item list-group-item-action blue" onClick = {() => { this.props.updateList(this.state.id, false) }}>{this.state.questionText}  Likes: {this.state.Likes}</button>
+                        
+                </div>
             )
         } else {
             return (
-                <button  className="list-group-item list-group-item-action" onClick ={() => {this.setState({isClicked: true}); this.props.updateList(this.state.id, true)}}>{this.state.questionText}  {this.state.Likes}</button>
+                 <div class = "row">
+                <button  className="list-group-item list-group-item-action default" onClick ={() => { this.props.updateList(this.state.id, true)}}>{this.state.questionText}  Likes: {this.state.Likes}</button>
+               
+                </div>
             )
         }
     }
 }
-
+//<button className="btn btn-danger">Delete</button>
+// <button className="btn btn-danger" onClick={}>Delete</button>
 export default Button;

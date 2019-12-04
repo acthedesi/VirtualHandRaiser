@@ -92,10 +92,41 @@ app.post('/api/update', (req, res) => {
     let questionText = req.body.question;
     let likes = req.body.likes;
     let room = req.body.room;
-    let isClicked = req.body.isClicked;
-    Questions.updateOne({question : questionText}, {likes: likes, isClicked:isClicked}).then(resp => {
-        res.json({success : true});
-    }); 
+    let clicked = req.body.clicked;
+    let username = req.body.username;
+    Questions.findOne({question : questionText}).then(r => {
+        let prevIsClicked = r.isClicked;
+        console.log("clicked: " + clicked);
+        if (clicked) {
+           let isFound = false;
+           let index = -1;
+           for (let i = 0; i < prevIsClicked.length; i++) {
+               if (prevIsClicked[i] == username) {
+                  isFound = true;
+                  index = 0;
+               }
+           }
+           if (!isFound) {
+               prevIsClicked.push(username);
+           }
+        } else {
+            let isFound = false;
+            let index = -1;
+            for (let i = 0; i < prevIsClicked.length; i++) {
+                if (prevIsClicked[i] == username) {
+                   isFound = true;
+                   index = 0;
+                }
+            }
+            if (isFound) {
+                prevIsClicked.splice(index, 1);
+            }
+        }
+        console.log("this is isClicked array: " + prevIsClicked);
+        Questions.updateOne({question : questionText}, {likes: likes, isClicked:prevIsClicked}).then(resp => {
+            res.json({success : true});
+        }); 
+    })   
 })
 
 
@@ -103,11 +134,12 @@ app.post('/api/addquestion', (req, res) => {
     let qtext = req.body.questionText;
     let room = req.body.room;
     console.log(room);
+    //let newIsClicked = ([]).push({username:username, clicked: false});
     let newQuestion = new Questions({
         question: qtext,
         likes: 0,
         room: room,
-        isClicked: false
+        isClicked: []
     })
     newQuestion.save().then(data => {
         console.log(data),

@@ -4,7 +4,7 @@ var questionSchema = new mongoose.Schema({
     question: String,
     likes: Number,
     room: Number,
-    isClicked: Boolean
+    isClicked: Array
 });
 
 module.exports = mongoose.model("Questions", questionSchema);
